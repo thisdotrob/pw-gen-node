@@ -11,6 +11,8 @@ describe('generatePasssword', () => {
 
   it('should return a password with the correct length', () => {
     assert.equal(generatePassword(20, true, true, true, true).length, 20);
+    assert.equal(generatePassword(18, true, true, true, true).length, 18);
+    assert.equal(generatePassword(1, true, true, true, true).length, 1);
   });
 
   describe('when the rules given can not be valid as all options are set to false', () => {
