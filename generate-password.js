@@ -6,6 +6,7 @@ function generatePasssword(length, uppercase, lowercase, number, special) {
   if (uppercase) characterSet.push('A');
   if (lowercase) characterSet.push('a');
   if (number) characterSet.push('0');
+  if (special) characterSet.push('!')
 
   if (!characterSet.length) throw new Error();
 
