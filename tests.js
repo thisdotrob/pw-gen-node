@@ -42,6 +42,13 @@ describe('generatePasssword', () => {
     });
   });
 
+  describe('when only \'special\' is set to true', () => {
+    it('should return a password with only special characters', () => {
+      const generated = generatePassword(4, false, false, false, true);
+      assert(/^[!$%&*@^]+$/.test(generated));
+    });
+  });
+
   describe('when \'lowercase\' and \'uppercase\' are set to true', () => {
     it('should return a password containing both lowercase and uppercase characters', () => {
       const generated = generatePassword(10, true, true, false, false);
@@ -66,6 +73,19 @@ describe('generatePasssword', () => {
     it('should return a password containing only lowercase, uppercase and numeric characters', () => {
       const generated = generatePassword(10, true, true, true, false);
       assert(/^[A-z0-9]+$/.test(generated));
+    });
+  });
+
+  describe('when \'lowercase\' and \'special\' are set to true', () => {
+    it('should return a password containing both lowercase and special characters', () => {
+      const generated = generatePassword(10, false, true, false, true);
+      assert(/[a-z]/.test(generated));
+      assert(/[!$%&*@^]/.test(generated));
+    });
+
+    it('should return a password containing only lowercase and uppercase characters', () => {
+      const generated = generatePassword(10, false, true, false, true);
+      assert(/^[a-z!$%&*@^]+$/.test(generated));
     });
   });
 });
