@@ -35,6 +35,13 @@ describe('generatePasssword', () => {
     });
   });
 
+  describe('when only \'number\' is set to true', () => {
+    it('should return a password with only numeric characters', () => {
+      const generated = generatePassword(4, false, false, true, false);
+      assert(/^[0-9]+$/.test(generated));
+    });
+  });
+
   describe('when \'lowercase\' and \'uppercase\' are set to true', () => {
     it('should return a password containing both lowercase and uppercase characters', () => {
       const generated = generatePassword(10, true, true, false, false);
@@ -42,9 +49,23 @@ describe('generatePasssword', () => {
       assert(/[A-Z]/.test(generated));
     });
 
-    it('should return a password containing only lowercase and uppercase charaters', () => {
+    it('should return a password containing only lowercase and uppercase characters', () => {
       const generated = generatePassword(10, true, true, false, false);
       assert(/^[A-z]+$/.test(generated));
+    });
+  });
+
+  describe('when \'lowercase\', \'uppercase\' and \'number\' are set to true', () => {
+    it('should return a password containing lowercase, uppercase and numeric characters', () => {
+      const generated = generatePassword(10, true, true, true, false);
+      assert(/[a-z]/.test(generated));
+      assert(/[A-Z]/.test(generated));
+      assert(/[0-9]/.test(generated));
+    });
+
+    it('should return a password containing only lowercase, uppercase and numeric characters', () => {
+      const generated = generatePassword(10, true, true, true, false);
+      assert(/^[A-z0-9]+$/.test(generated));
     });
   });
 });
