@@ -24,14 +24,14 @@ describe('generatePasssword', () => {
   describe('when only \'uppercase\' is set to true', () => {
     it('should return a password with only uppercase characters', () => {
       const generated = generatePassword(10, true, false, false, false);
-      assert(/^[A-Z]/.test(generated));
+      assert(/^[A-Z]+$/.test(generated));
     });
   });
 
   describe('when only \'lowercase\' is set to true', () => {
     it('should return a password with only lowercase characters', () => {
       const generated = generatePassword(10, false, true, false, false);
-      assert(/^[a-z]/.test(generated));
+      assert(/^[a-z]+$/.test(generated));
     });
   });
 
@@ -44,7 +44,7 @@ describe('generatePasssword', () => {
 
     it('should return a password containing only lowercase and uppercase charaters', () => {
       const generated = generatePassword(10, true, true, false, false);
-      assert(/^[A-z]/.test(generated));
+      assert(/^[A-z]+$/.test(generated));
     });
   });
 });
