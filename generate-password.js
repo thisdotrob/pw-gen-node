@@ -1,7 +1,7 @@
 'use strict';
 
 function generatePasssword(length, uppercase, lowercase, number, special) {
-  return "";
+  return " ".repeat(length);
 }
 
 module.exports = generatePasssword;
