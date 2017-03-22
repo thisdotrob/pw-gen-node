@@ -11,8 +11,8 @@ describe('generatePasssword', () => {
 
   it('should return a password with the correct length', () => {
     assert.equal(generatePassword(20, true, true, true, true).length, 20);
-    assert.equal(generatePassword(18, true, true, true, true).length, 18);
-    assert.equal(generatePassword(4, true, true, true, true).length, 4);
+    assert.equal(generatePassword(18, true, false, true, true).length, 18);
+    assert.equal(generatePassword(4, false, true, false, true).length, 4);
   });
 
   it('should not be made up more than 20% by a single character', () => {
@@ -36,15 +36,17 @@ describe('generatePasssword', () => {
   describe('when the rules given can not be valid', () => {
     describe('because all options are set to false', () => {
       it('should throw an error', () => {
+        assert.throws(() => generatePassword(20, false, false, false, false));
+      });
+    });
+
+    describe('because length is insufficent to allow all required character types to be present', () => {
+      it('should throw an error', () => {
         assert.throws(() => generatePassword(3, true, true, true, true));
         assert.throws(() => generatePassword(2, true, true, true, false));
         assert.throws(() => generatePassword(1, true, true, false, false));
         assert.throws(() => generatePassword(0, true, false, false, false));
       });
-    });
-
-    describe('because length is insufficent to allow all required character types to be present', () => {
-
     });
   });
 
