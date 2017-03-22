@@ -7,12 +7,18 @@ const SPECIAL_CHARS = '!$%&*@^';
 const MAX_PROPORTION_SINGLE_CHAR = 0.2;
 
 function generatePasssword(length, uppercase, lowercase, number, special) {
+  if (!argumentsValid(length, uppercase, lowercase, number, special)) throw new Error();
   const charSet = createCharSet(uppercase, lowercase, number, special);
-  if (!charSet) throw new Error();
   let password = Array(length).fill(null);
   password = populateWithOneOfEachRequiredCharType(password, uppercase, lowercase, number, special);
   password = populateRemaining(password, charSet);
   return password.join("");
+}
+
+function argumentsValid(length, uppercase, lowercase, number, special) {
+  const hasSufficientLengthForRequiredCharSets = length >= (uppercase + lowercase + number + special);
+  const hasAtLeastOneRequiredCharSet = uppercase || lowercase || number || special;
+  return hasSufficientLengthForRequiredCharSets && hasAtLeastOneRequiredCharSet;
 }
 
 function createCharSet(uppercase, lowercase, number, special) {
