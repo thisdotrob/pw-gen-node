@@ -8,51 +8,40 @@ const MAX_PROPORTION_SINGLE_CHAR = 0.2;
 
 function generatePasssword(length, uppercase, lowercase, number, special) {
   if (!argumentsValid(length, uppercase, lowercase, number, special)) throw new Error();
-  const charSet = createCharSet(uppercase, lowercase, number, special);
+
   let password = Array(length).fill(null);
+
   password = populateWithOneOfEachRequiredCharType(password, uppercase, lowercase, number, special);
-  password = populateRemaining(password, charSet);
+
+  password = populateRemaining(password, uppercase, lowercase, number, special);
+
   return password.join("");
 }
 
 function argumentsValid(length, uppercase, lowercase, number, special) {
   const hasSufficientLengthForRequiredCharSets = length >= (uppercase + lowercase + number + special);
-  const hasAtLeastOneRequiredCharSet = uppercase || lowercase || number || special;
-  return hasSufficientLengthForRequiredCharSets && hasAtLeastOneRequiredCharSet;
-}
 
-function createCharSet(uppercase, lowercase, number, special) {
-  let charSet = '';
-  if (uppercase) charSet += UPPERCASE_CHARS;
-  if (lowercase) charSet += LOWERCASE_CHARS;
-  if (number) charSet += NUMBER_CHARS;
-  if (special) charSet += SPECIAL_CHARS;
-  return charSet;
+  const hasAtLeastOneRequiredCharSet = uppercase || lowercase || number || special;
+
+  return hasSufficientLengthForRequiredCharSets && hasAtLeastOneRequiredCharSet;
 }
 
 function populateWithOneOfEachRequiredCharType(password, uppercase, lowercase, number, special) {
   if (uppercase) password[randomEmptyIndex(password)] = randomChar(UPPERCASE_CHARS);
+
   if (lowercase) password[randomEmptyIndex(password)] = randomChar(LOWERCASE_CHARS);
+
   if (number) password[randomEmptyIndex(password)] = randomChar(NUMBER_CHARS);
+
   if (special) password[randomEmptyIndex(password)] = randomChar(SPECIAL_CHARS);
+
   return password;
 }
 
-function randomIndex(array) {
-  return Math.floor(Math.random() * array.length);
-}
-
-function randomEmptyIndex(password) {
-  let emptyIndex = null;
-  while (emptyIndex === null) {
-    const index = randomIndex(password)
-    if (password[index] === null) emptyIndex = index;
-  }
-  return emptyIndex;
-}
-
-function populateRemaining(password, charSet) {
+function populateRemaining(password, uppercase, lowercase, number, special) {
   const singleCharCountLimit = password.length * MAX_PROPORTION_SINGLE_CHAR;
+
+  const charSet = createCharSet(uppercase, lowercase, number, special);
 
   const charCounts = calculateCharCounts(password, charSet);
 
@@ -63,18 +52,46 @@ function populateRemaining(password, charSet) {
 
     while(char === null) {
       const candidate = randomChar(charSet);
+
       if (charCounts[candidate] < singleCharCountLimit) char = candidate;
     }
 
     password[i] = char;
+
     charCounts[char] += 1;
   }
 
   return password;
 }
 
+function randomEmptyIndex(password) {
+  let emptyIndex = null;
+
+  while (emptyIndex === null) {
+    const index = randomIndex(password)
+
+    if (password[index] === null) emptyIndex = index;
+  }
+
+  return emptyIndex;
+}
+
 function randomChar(charSet) {
   return charSet[Math.floor(Math.random() * charSet.length)];
+}
+
+function createCharSet(uppercase, lowercase, number, special) {
+  let charSet = '';
+
+  if (uppercase) charSet += UPPERCASE_CHARS;
+
+  if (lowercase) charSet += LOWERCASE_CHARS;
+
+  if (number) charSet += NUMBER_CHARS;
+
+  if (special) charSet += SPECIAL_CHARS;
+
+  return charSet;
 }
 
 function calculateCharCounts(password, charSet) {
@@ -89,6 +106,10 @@ function calculateCharCounts(password, charSet) {
   }
 
   return characterCounts;
+}
+
+function randomIndex(array) {
+  return Math.floor(Math.random() * array.length);
 }
 
 module.exports = generatePasssword;
