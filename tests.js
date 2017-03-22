@@ -33,9 +33,18 @@ describe('generatePasssword', () => {
     }
   });
 
-  describe('when the rules given can not be valid as all options are set to false', () => {
-    it('should throw an error', () => {
-      assert.throws(() => generatePassword(10, false, false, false, false));
+  describe('when the rules given can not be valid', () => {
+    describe('because all options are set to false', () => {
+      it('should throw an error', () => {
+        assert.throws(() => generatePassword(3, true, true, true, true));
+        assert.throws(() => generatePassword(2, true, true, true, false));
+        assert.throws(() => generatePassword(1, true, true, false, false));
+        assert.throws(() => generatePassword(0, true, false, false, false));
+      });
+    });
+
+    describe('because length is insufficent to allow all required character types to be present', () => {
+
     });
   });
 
